@@ -5,9 +5,9 @@ import os
 # Custom modules:
 import modules.reaction_roles
 import modules.logger
-
 from secrets import secure
 
+import json
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
 
@@ -30,8 +30,6 @@ async def on_ready():
     )
     cursor = db.cursor(buffered=True)
     print("The bot is ready!")
-
-
 # Welcome a new member
 @bot.event
 async def on_member_join(member):
@@ -48,12 +46,9 @@ async def on_member_remove(member):
     channel = bot.get_channel(1002208150545510402)
     await channel.send(f"{member.name} is helaas vertrokken!")
 
-
-
 @bot.event
 async def on_message_delete(message):
-    msg = str(message.author)+ 'deleted message in '+str(message.channel)+': '+str(message.content)
-    print()
+    print("deleted", message)
 
 
 
@@ -119,3 +114,4 @@ async def level_board(inter):
 
 
 bot.run(secure.bot_token)
+

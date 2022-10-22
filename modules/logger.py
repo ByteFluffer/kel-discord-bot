@@ -1,4 +1,13 @@
-async def on_message_delete(message):
-    async for entry in message.guild.audit_logs(limit=1,action=disnake.AuditLogAction.message_delete):
-        deleter = entry.user
-    print(f"{deleter.name} deleted message by {message.author.name}")
+import disnake
+from disnake.ext import commands
+
+intents = disnake.Intents.all()
+bot = commands.Bot(intents=intents)
+
+@bot.event
+async def on_guild_channel_delete(channel):
+        print(f"Channel deleted: {channel}")
+
+@bot.event
+async def on_guild_channel_create(channel):
+        print(f"Channel deleted: {channel}")
