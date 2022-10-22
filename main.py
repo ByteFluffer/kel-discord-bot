@@ -4,12 +4,16 @@ import mysql.connector
 import os
 # Custom modules:
 import modules.reaction_roles
+import modules.logger
+
 from secrets import secure
 
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
 
 # TODO: make comments
+
+
 
 
 @bot.event
@@ -35,11 +39,24 @@ async def on_member_join(member):
     channel = bot.get_channel(1002208150545510402)
     await channel.send(f"Welkom {member.mention} op mijn server! Bij vragen of support ping gerust de admin rol! :heart:")
 
+    role = member.guild.get_role(1033382789543903244)
+    await member.add_roles(role)
+
 # Saying goodby to a member
 @bot.event
 async def on_member_remove(member):
     channel = bot.get_channel(1002208150545510402)
     await channel.send(f"{member.name} is helaas vertrokken!")
+
+
+
+@bot.event
+async def on_message_delete(message):
+    msg = str(message.author)+ 'deleted message in '+str(message.channel)+': '+str(message.content)
+    print()
+
+
+
 
 # Testing online status of the bot
 @bot.slash_command(description="Test of ik nog werk!")
