@@ -14,11 +14,19 @@ class PingCommand(commands.Cog):
         @bot.event
         async def on_raw_message_delete(messageDeleted):
 
-                embed=disnake.Embed(title="Bericht deleted door:", description="KomtNog", color=LOGGING_DANGER)
+                embed=disnake.Embed(title="Bericht verwijderd door:", description="KomtNog", color=LOGGING_DANGER)
                 embed.add_field(name=f"Verwijderde bericht:", value=messageDeleted, inline=False)
 
                 await send_to_log(embed)
 
+        @bot.event
+        async def on_bulk_message_delete(messageDeleted):
+
+                embed=disnake.Embed(title="Bulk berichten verwijderd door:", description="KomtNog", color=LOGGING_DANGER)
+                embed.add_field(name=f"Verwijderde bericht:", value=messageDeleted, inline=False)
+
+                await send_to_log(embed)
+                
         @bot.event
         async def on_raw_message_edit(messageEdited):
 
@@ -29,12 +37,13 @@ class PingCommand(commands.Cog):
                 await send_to_log(embed)
 
 
+
         # Channel logging
         @bot.event
         async def on_guild_channel_delete(channelDeleted):
             async for entry in channelDeleted.guild.audit_logs(limit=1, action=disnake.AuditLogAction.channel_delete):
 
-                embed=disnake.Embed(title="Channel deleted door:", description=entry.user.mention, color=LOGGING_DANGER)
+                embed=disnake.Embed(title="Channel verwijderd door:", description=entry.user.mention, color=LOGGING_DANGER)
                 embed.add_field(name=f"Kanaalnaam:", value=channelDeleted, inline=False)
 
                 await send_to_log(embed)
@@ -62,6 +71,9 @@ class PingCommand(commands.Cog):
         async def send_to_log(embed):
             LogChannel = bot.get_channel(1033152626507923507)
             await LogChannel.send(embed=embed) 
+
+
+
 
 
 def setup(bot: commands.Bot):

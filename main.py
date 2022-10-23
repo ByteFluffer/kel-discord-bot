@@ -118,6 +118,7 @@ async def level_board(inter):
 
 bot.load_extension("cogs.logger") 
 bot.load_extension("cogs.community")  
+bot.load_extension("cogs.admin_functions")  
 
 
 bot.run(secure.bot_token)
