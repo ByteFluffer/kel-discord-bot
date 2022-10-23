@@ -37,7 +37,7 @@ async def on_message(inter):
     if inter.content.startswith("!!!"):
         print("")
     
-    bot_list_id = [979415217337401424, 979415217337401424]
+    bot_list_id = [979415217337401424, 979415217337401424, 1033722440158814288]
     if inter.author.id not in bot_list_id:
         # Getting users from db:
         cursor.execute(f"SELECT * FROM Users WHERE user_id = {inter.author.id}")
