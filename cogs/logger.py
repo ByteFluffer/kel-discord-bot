@@ -18,15 +18,17 @@ class PingCommand(commands.Cog):
                 embed.add_field(name=f"Verwijderde bericht:", value=messageDeleted, inline=False)
 
                 await send_to_log(embed)
-
+                
+        # On bulk message deletion
         @bot.event
-        async def on_bulk_message_delete(messageDeleted):
-
-                embed=disnake.Embed(title="Bulk berichten verwijderd door:", description="KomtNog", color=LOGGING_DANGER)
-                embed.add_field(name=f"Verwijderde bericht:", value=messageDeleted, inline=False)
+        async def on_raw_bulk_message_delete(BulkMessageDeleted):
+            
+                embed=disnake.Embed(title="Bulk berichten verwijderd door:", description="Komtnog", color=LOGGING_DANGER)
+                embed.add_field(name=f"Verwijderde berichten:", value="Komtnog", inline=False)
 
                 await send_to_log(embed)
                 
+        # When a message is edited        
         @bot.event
         async def on_raw_message_edit(messageEdited):
 
@@ -47,7 +49,8 @@ class PingCommand(commands.Cog):
                 embed.add_field(name=f"Kanaalnaam:", value=channelDeleted, inline=False)
 
                 await send_to_log(embed)
-
+                
+        # When new channel is created
         @bot.event
         async def on_guild_channel_create(channelMaked):
             async for entry in channelMaked.guild.audit_logs(limit=1, action=disnake.AuditLogAction.channel_delete):
@@ -56,9 +59,10 @@ class PingCommand(commands.Cog):
                 embed.add_field(name=f"Kanaalnaam:", value=channelMaked, inline=False)
 
                 await send_to_log(embed)
-
+                
+        # When channel name is edited
         @bot.event
-        async def on_guild_channel_edit(channelEdited):
+        async def on_raw_guild_channel_edit(channelEdited):
             async for entry in channelEdited.guild.audit_logs(limit=1, action=disnake.AuditLogAction.channel_delete):
 
                 embed=disnake.Embed(title="Channel Geedit door:", description=entry.user.mention, color=LOGGING_ORANGE)
