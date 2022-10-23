@@ -1,5 +1,4 @@
 from asyncio.log import logger
-import logging
 import disnake
 from disnake.ext import commands
 import mysql.connector
@@ -12,11 +11,9 @@ from disnake.ext.commands import Bot
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
 
-
-
 # TODO: make comments
 
-
+# Getting things ready
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=disnake.Activity(type=disnake.ActivityType.listening , name="/kel"))
@@ -33,72 +30,42 @@ async def on_ready():
     print("The bot is ready!")
 
 
-# Welcome a new member
-@bot.event
-async def on_member_join(member):
-    print(f"{member} is erbij gekomen!")
-    channel = bot.get_channel(1002208150545510402)
-    await channel.send(f"Welkom {member.mention} op mijn server! Bij vragen of support ping gerust de admin rol! :heart:")
-
-    role = member.guild.get_role(1033382789543903244)
-    await member.add_roles(role)
-
-# Saying goodby to a member
-@bot.event
-async def on_member_remove(member):
-    channel = bot.get_channel(1002208150545510402)
-    await channel.send(f"{member.name} is helaas vertrokken!")
-
-
-
-
-
-# Testing online status of the bot
-@bot.slash_command(description="Test of ik nog werk!")
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def ping(inter):
-    await inter.response.send_message(f"Pong! De latency van mij is: {round(bot.latency, 1)}ms.")  
-
-@bot.slash_command(description="Level leader board!")
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def levelbord(inter):
-    await level_board(inter)
-
-
 
 # Message counting
 @bot.event
 async def on_message(inter):
-    if inter.content.lower().startswith("#$@$"):
+    if inter.content.startswith("!!!"):
         print("")
-        
-    if inter.author.id == 979415217337401424 or 1033722440158814288 or 1002205105220767766 or 1033722440158814288:
-        print()
-    else:
+    
+    bot_list_id = [979415217337401424, 979415217337401424]
+    if inter.author.id not in bot_list_id:
+        # Getting users from db:
         cursor.execute(f"SELECT * FROM Users WHERE user_id = {inter.author.id}")
-        result_all = cursor.fetchall()
-
-        if result_all == []:
+        result_user = cursor.fetchall()
+        
+        if result_user == []:
             cursor.execute(f"INSERT INTO Users (user_id, total_message_count) VALUES ({inter.author.id}, 1)")
             db.commit()
-        else:
-            cursor.execute(f"SELECT total_message_count FROM Users WHERE user_id = {inter.author.id}")
-            result_all = cursor.fetchone()[0]
+            
+        # If user is in the database
+        cursor.execute(f"SELECT total_message_count FROM Users WHERE user_id = {inter.author.id}")
+        result_user = cursor.fetchone()[0]
+        
+        counting_new_total = int(result_user) + 1
+        cursor.execute(f"UPDATE Users SET total_message_count = {counting_new_total} WHERE user_id = {inter.author.id}")
+        db.commit()
+        
+        
 
-            counting_new_total = int(result_all) + 1 
-
-            cursor.execute(f"UPDATE Users SET total_message_count = {counting_new_total} WHERE user_id = {inter.author.id}")
-            db.commit()
-            print(f"User {inter.author.id} heeft een bericht gestuurd op de server!")
-
-
-# Defining stuffies
-async def level_board(inter):
+# Level leader board
+@bot.slash_command(description="Level leader board!")
+async def levelbord(inter):
+    
     # Getting info from DATABASE
     cursor.execute("SELECT * FROM Users ORDER BY total_message_count DESC")
     result_all = cursor.fetchall()
 
-    embed=disnake.Embed(title="Level bord!", description="Desc", color=0x00ff00)
+    embed=disnake.Embed(title="Level bord!", description="Van hoog naar laag:", color=0x00ff00)
 
     for user_from_db in result_all:
         user_id_from_db = user_from_db[0]
@@ -108,18 +75,14 @@ async def level_board(inter):
         embed.add_field(name=f"Gebruiker: {name_user}", value=f"Totaal aantal berichten: {msg_count_from_db}", inline=False)
     
     embed.set_footer(text="By </Kelvin>", icon_url="https://itkelvin.nl/CustomCPULOGO.png")
-
     await inter.response.send_message(embed=embed)  
+    
 
 
-# Logging starters
-
-
-
+# Loading different modules
 bot.load_extension("cogs.logger") 
 bot.load_extension("cogs.community")  
 bot.load_extension("cogs.admin_functions")  
-
-
+    
 bot.run(secure.bot_token)
 
