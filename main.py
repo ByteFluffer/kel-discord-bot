@@ -72,7 +72,7 @@ async def on_message(inter):
     if inter.content.lower().startswith("#$@$"):
         print("")
         
-    if inter.author.id != 979415217337401424:
+    if inter.author.id != 979415217337401424 or 1033722440158814288 or 1002205105220767766:
         cursor.execute(f"SELECT * FROM Users WHERE user_id = {inter.author.id}")
         result_all = cursor.fetchall()
 
@@ -88,8 +88,6 @@ async def on_message(inter):
             cursor.execute(f"UPDATE Users SET total_message_count = {counting_new_total} WHERE user_id = {inter.author.id}")
             db.commit()
             print(f"User {inter.author.id} heeft een bericht gestuurd op de server!")
-
-
 
 
 # Defining stuffies
