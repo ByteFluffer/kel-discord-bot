@@ -72,22 +72,23 @@ async def on_message(inter):
     if inter.content.lower().startswith("#$@$"):
         print("")
         
-    if inter.author.id != 979415217337401424 and 1033722440158814288 and 1002205105220767766:
-        cursor.execute(f"SELECT * FROM Users WHERE user_id = {inter.author.id}")
-        result_all = cursor.fetchall()
+    if inter.author.id == 979415217337401424 or 1033722440158814288 or 1002205105220767766:
+        print("")
+    cursor.execute(f"SELECT * FROM Users WHERE user_id = {inter.author.id}")
+    result_all = cursor.fetchall()
 
-        if result_all == []:
-            cursor.execute(f"INSERT INTO Users (user_id, total_message_count) VALUES ({inter.author.id}, 1)")
-            db.commit()
-        else:
-            cursor.execute(f"SELECT total_message_count FROM Users WHERE user_id = {inter.author.id}")
-            result_all = cursor.fetchone()[0]
+    if result_all == []:
+        cursor.execute(f"INSERT INTO Users (user_id, total_message_count) VALUES ({inter.author.id}, 1)")
+        db.commit()
+    else:
+        cursor.execute(f"SELECT total_message_count FROM Users WHERE user_id = {inter.author.id}")
+        result_all = cursor.fetchone()[0]
 
-            counting_new_total = int(result_all) + 1 
+        counting_new_total = int(result_all) + 1 
 
-            cursor.execute(f"UPDATE Users SET total_message_count = {counting_new_total} WHERE user_id = {inter.author.id}")
-            db.commit()
-            print(f"User {inter.author.id} heeft een bericht gestuurd op de server!")
+        cursor.execute(f"UPDATE Users SET total_message_count = {counting_new_total} WHERE user_id = {inter.author.id}")
+        db.commit()
+        print(f"User {inter.author.id} heeft een bericht gestuurd op de server!")
 
 
 # Defining stuffies
