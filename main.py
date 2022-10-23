@@ -1,19 +1,20 @@
+from asyncio.log import logger
+import logging
 import disnake
 from disnake.ext import commands
 import mysql.connector
 import os
 # Custom modules:
-import modules.reaction_roles
-import modules.logger
 from secrets import secure
+import cogs.logger as logger
+from disnake.ext.commands import Bot
 
-import json
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
 
+
+
 # TODO: make comments
-
-
 
 
 @bot.event
@@ -30,6 +31,8 @@ async def on_ready():
     )
     cursor = db.cursor(buffered=True)
     print("The bot is ready!")
+
+
 # Welcome a new member
 @bot.event
 async def on_member_join(member):
@@ -46,9 +49,6 @@ async def on_member_remove(member):
     channel = bot.get_channel(1002208150545510402)
     await channel.send(f"{member.name} is helaas vertrokken!")
 
-@bot.event
-async def on_message_delete(message):
-    print("deleted", message)
 
 
 
@@ -90,8 +90,9 @@ async def on_message(inter):
             print(f"User {inter.author.id} heeft een bericht gestuurd op de server!")
 
 
-# Defining stuffies
 
+
+# Defining stuffies
 async def level_board(inter):
     # Getting info from DATABASE
     cursor.execute("SELECT * FROM Users ORDER BY total_message_count DESC")
@@ -111,6 +112,12 @@ async def level_board(inter):
     await inter.response.send_message(embed=embed)  
 
 
+# Logging starters
+
+
+
+bot.load_extension("cogs.logger") 
+bot.load_extension("cogs.community")  
 
 
 bot.run(secure.bot_token)
