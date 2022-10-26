@@ -31,7 +31,7 @@ async def on_ready():
 
 
 
-# Message counting
+# Message counting!
 @bot.event
 async def on_message(inter):
     if inter.content.startswith("!!!"):
