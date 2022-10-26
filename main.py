@@ -87,7 +87,7 @@ async def minute():
     for user in users:
         if user[1] > 5:
             member = user[0]
-            print(f"User {member} is boven de 5 berichten")
+            print(f"User {member} meer dan 5 messages")
     
 # Loading different modules
 bot.load_extension("cogs.logger") 
