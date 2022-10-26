@@ -3,7 +3,7 @@ import disnake
 from disnake.ext import commands
 import mysql.connector
 import os
-# Custom modules:
+# Custom modules
 from secrets import secure
 import cogs.logger as logger
 from disnake.ext.commands import Bot
