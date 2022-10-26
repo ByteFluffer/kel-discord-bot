@@ -5,8 +5,12 @@ import mysql.connector
 import os
 # Custom modules:
 from secrets import secure
+
 import cogs.logger as logger
 from disnake.ext.commands import Bot
+
+import threading
+from threading import Timer
 
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
@@ -28,7 +32,7 @@ async def on_ready():
     )
     cursor = db.cursor(buffered=True)
     print("The bot is ready now!")
-
+    await minute()
 
 
 # Message counting!
@@ -71,14 +75,20 @@ async def levelbord(inter):
         user_id_from_db = user_from_db[0]
         msg_count_from_db = user_from_db[1]
         name_user = (await bot.get_or_fetch_user(user_id_from_db)).name             
-
         embed.add_field(name=f"Gebruiker: {name_user}", value=f"Totaal aantal berichten: {msg_count_from_db}", inline=False)
     
     embed.set_footer(text="By </Kelvin>", icon_url="https://itkelvin.nl/CustomCPULOGO.png")
     await inter.response.send_message(embed=embed)  
     
-
-
+async def minute():
+    threading.Timer(60, minute).start()
+    cursor.execute("SELECT * FROM Users")
+    users = cursor.fetchall()
+    for user in users:
+        if user[1] > 5:
+            member = user[0]
+            print(f"User {member} is boven de 5 berichten")
+    
 # Loading different modules
 bot.load_extension("cogs.logger") 
 bot.load_extension("cogs.community")  
