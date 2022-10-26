@@ -27,7 +27,7 @@ async def on_ready():
     auth_plugin="mysql_native_password"
     )
     cursor = db.cursor(buffered=True)
-    print("The bot is ready!")
+    print("The bot is ready now!")
 
 
 
