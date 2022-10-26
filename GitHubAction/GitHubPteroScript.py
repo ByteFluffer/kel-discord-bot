@@ -16,7 +16,7 @@ api = PterodactylClient(gamemanager_url, gamemanager_client_password)
 my_servers = api.client.servers.list_servers()
 
 # Get the second server
-srv_id = my_servers[6]["attributes"]["identifier"]
+srv_id = my_servers[5]["attributes"]["identifier"]
 
 # Rebooting the individual server
 api.client.servers.send_power_action(srv_id, "restart")
