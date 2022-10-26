@@ -15,8 +15,8 @@ api = PterodactylClient(gamemanager_url, gamemanager_client_password)
 # Get a list of all servers
 my_servers = api.client.servers.list_servers()
 
-# Get the 5 server server by ID
-srv_id = my_servers[4]["attributes"]["identifier"]
+# Get the 4 server server by ID
+srv_id = my_servers[3]["attributes"]["identifier"]
 
 # Rebooting the individual server
 api.client.servers.send_power_action(srv_id, "restart")
