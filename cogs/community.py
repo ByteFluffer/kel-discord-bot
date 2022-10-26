@@ -75,12 +75,9 @@ class Community(commands.Cog):
         @bot.slash_command(description="Markeer dit forum kanaal als opgelost")
         @commands.cooldown(1, 3, commands.BucketType.user)
         async def solved(inter):
-            channel_msg = inter.channel.id
-            Channel_send_msg = bot.get_channel(channel_msg)
-
+            
             embed=disnake.Embed(title=":white_check_mark: Probleem als opgelost gemarkeerd door:", description=inter.author.mention, color=EMBED_GOOD)
-            ForumChannel = bot.get_channel(channel_msg)
-            await ForumChannel.send(embed=embed) 
+            await inter.response.send_message(embed=embed) 
 
             
 def setup(bot: commands.Bot):
