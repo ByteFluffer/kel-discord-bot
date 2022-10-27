@@ -13,7 +13,7 @@ class PingCommand(commands.Cog):
         # Message logging
         @bot.event
         async def on_raw_message_delete(messageDeleted):
-
+                
                 embed=disnake.Embed(title="Bericht verwijderd door:", description="KomtNog", color=LOGGING_DANGER)
                 embed.add_field(name=f"Verwijderde bericht:", value=messageDeleted, inline=False)
 
