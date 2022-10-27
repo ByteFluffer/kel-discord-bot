@@ -34,12 +34,10 @@ async def on_ready():
     await minute()
 
 
-# Message counting!
+# Message counting
 @bot.event
 async def on_message(inter):
-    if inter.content.startswith("!!!"):
-        print("")
-    
+
     bot_list_id = [979415217337401424, 979415217337401424, 1033722440158814288, 1007766943585026141]
     if inter.author.id not in bot_list_id:
         # Getting users from db:
