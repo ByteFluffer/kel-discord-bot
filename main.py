@@ -34,15 +34,14 @@ async def on_ready():
     await minute()
 
 
-# Message counting!
+# Message counting, unless it is a bot
 @bot.event
 async def on_message(inter):
-    if inter.content.startswith("!!!"):
-        print("")
     
     bot_list_id = [979415217337401424, 979415217337401424, 1033722440158814288, 1007766943585026141, 1034947262339616849, 1002205105220767766]
     if inter.author.id not in bot_list_id:
-        # Getting users from db:
+        
+        # Getting users from db
         cursor.execute(f"SELECT * FROM Users WHERE user_id = {inter.author.id}")
         result_user = cursor.fetchall()
         
@@ -50,10 +49,11 @@ async def on_message(inter):
             cursor.execute(f"INSERT INTO Users (user_id, total_message_count) VALUES ({inter.author.id}, 1)")
             db.commit()
             
-        # If user is in the database
+        # Get user message counter
         cursor.execute(f"SELECT total_message_count FROM Users WHERE user_id = {inter.author.id}")
         result_user = cursor.fetchone()[0]
         
+        # Adding + 1 to message counter, and update the database
         counting_new_total = int(result_user) + 1
         cursor.execute(f"UPDATE Users SET total_message_count = {counting_new_total} WHERE user_id = {inter.author.id}")
         db.commit()
