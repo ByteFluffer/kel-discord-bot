@@ -14,7 +14,6 @@ from threading import Timer
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
 
-# TODO: make comments
 
 # Getting things ready
 @bot.event
