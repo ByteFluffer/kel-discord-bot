@@ -77,12 +77,11 @@ class Community(commands.Cog):
         async def solved(inter):
             
             get_channel_id = inter.channel.id            
-            thread = bot.get_channel(get_channel_id)  # You can also use bot.get_channel(...)
-            await thread.edit(archived=True)
-            
             embed=disnake.Embed(title="Opgelost!", description=f"Ik heb deze thread als opgelost gemarkeerd! Thread is gesloten door {inter.author.mention}", color=EMBED_GOOD)
             await inter.response.send_message(embed=embed)             
             
+            thread = bot.get_channel(get_channel_id)  # You can also use bot.get_channel(...)
+            await thread.edit(archived=True)
             
         # Poll function
         @bot.slash_command(description="Maak een poll aan!")
