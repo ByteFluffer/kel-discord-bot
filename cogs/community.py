@@ -79,7 +79,48 @@ class Community(commands.Cog):
             embed=disnake.Embed(title=":white_check_mark: Probleem als opgelost gemarkeerd door:", description=inter.author.mention, color=EMBED_GOOD)
             await inter.response.send_message(embed=embed) 
 
+        # Poll function
+        @bot.slash_command(description="Maak een poll aan!")
+        @commands.cooldown(1, 3, commands.BucketType.user)
+        async def poll_create(inter, question: str, choice_1 = None, choice_2 = None, choice_3 = None, choice_4 = None):
             
+            embed=disnake.Embed(title="POLL", description=f"Question: {question}", color=EMBED_GOOD)
+            if choice_1 != None:
+                embed.add_field(name=choice_1, value=":one:", inline=False)
+                
+            if choice_2 != None:
+                embed.add_field(name=choice_2, value=":two:", inline=False)
+                
+            if choice_3 != None:
+                embed.add_field(name=choice_3, value=":three:", inline=False)
+                
+            if choice_4 != None:
+                embed.add_field(name=choice_4, value=":four:", inline=False)
+                                              
+            user_avatar = (await bot.get_or_fetch_user(inter.author.id)).avatar
+
+            embed.set_footer(text = f"Aangemaakt door {inter.author.name}", icon_url = user_avatar)
+            await inter.response.send_message(embed=embed) 
+            
+            if choice_1 != None:
+                msg = await inter.original_message()
+                await msg.add_reaction("1️⃣")
+
+            if choice_2 != None:
+                msg = await inter.original_message()
+                await msg.add_reaction("2️⃣")
+
+            if choice_3 != None:
+                msg = await inter.original_message()
+                await msg.add_reaction("3️⃣")
+
+            if choice_4 != None:
+                msg = await inter.original_message()
+                await msg.add_reaction("4️⃣")
+
+
+            
+        
 def setup(bot: commands.Bot):
     bot.add_cog(Community(bot))
     
