@@ -14,8 +14,9 @@ from threading import Timer
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
 
+# TODO: Add comments to admin_functions.py & logger.py
 
-# Getting things ready
+# Getting things ready and making the database connection
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=disnake.Activity(type=disnake.ActivityType.listening , name="/kel"))
@@ -30,52 +31,38 @@ async def on_ready():
     )
     cursor = db.cursor(buffered=True)
     print("The bot is ready now!")
+    # Starts threaded loop
     await minute()
-
+      
 
 # Message counting
 @bot.event
 async def on_message(inter):
     
+    # Bots to exclude from counting
     bot_list_id = [979415217337401424, 979415217337401424, 1033722440158814288, 1007766943585026141]
     if inter.author.id not in bot_list_id:
+        
         # Getting users from db:
         cursor.execute(f"SELECT * FROM Users WHERE user_id = {inter.author.id}")
         result_user = cursor.fetchall()
         
+        # If result is empty list, do a insert into the database
         if result_user == []:
             cursor.execute(f"INSERT INTO Users (user_id, total_message_count) VALUES ({inter.author.id}, 1)")
             db.commit()
             
-        # If user is in the database
+        # If user is in the database, do a select to database
         cursor.execute(f"SELECT total_message_count FROM Users WHERE user_id = {inter.author.id}")
         result_user = cursor.fetchone()[0]
         
+        # Adding + 1 from database total_message_count, and update the database with new value
         counting_new_total = int(result_user) + 1
+        
         cursor.execute(f"UPDATE Users SET total_message_count = {counting_new_total} WHERE user_id = {inter.author.id}")
         db.commit()
         
-        
-
-# Level leader board
-@bot.slash_command(description="Level leader board!")
-async def levelbord(inter):
-    
-    # Getting info from DATABASE
-    cursor.execute("SELECT * FROM Users ORDER BY total_message_count DESC")
-    result_all = cursor.fetchall()
-
-    embed=disnake.Embed(title="Level bord!", description="Van hoog naar laag:", color=0x00ff00)
-
-    for user_from_db in result_all:
-        user_id_from_db = user_from_db[0]
-        msg_count_from_db = user_from_db[1]
-        name_user = (await bot.get_or_fetch_user(user_id_from_db)).name             
-        embed.add_field(name=f"Gebruiker: {name_user}", value=f"Totaal aantal berichten: {msg_count_from_db}", inline=False)
-    
-    embed.set_footer(text="By </Kelvin>", icon_url="https://itkelvin.nl/CustomCPULOGO.png")
-    await inter.response.send_message(embed=embed)  
-    
+# Check if user hase more then 5 messageg, if yes print them (going to change)
 async def minute():
     threading.Timer(60, minute).start()
     cursor.execute("SELECT * FROM Users")
@@ -84,11 +71,13 @@ async def minute():
         if user[1] > 5:
             member = user[0]
             print(f"User {member} meer dan 5 messages")
-    
-# Loading different modules
+
+
+# Loading different cogs
 bot.load_extension("cogs.logger") 
 bot.load_extension("cogs.community")  
 bot.load_extension("cogs.admin_functions")  
     
+# Run bot with token imported from secrets.py
 bot.run(secure.bot_token)
 
