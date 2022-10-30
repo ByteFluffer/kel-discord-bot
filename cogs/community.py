@@ -95,19 +95,19 @@ class Community(commands.Cog):
             get_channel_id = inter.channel.id         
             
             # Sending a embed with "Solved" in it. Also show who executed the command
-            embed=disnake.Embed(title="Opgelost!", description=f"Ik heb deze thread als opgelost gemarkeerd! Thread is gesloten door {inter.author.mention}", color=EMBED_GOOD)
+            embed=disnake.Embed(title="Opgelost!", description=f"Ik heb deze thread als opgelost gemarkeerd! Thread is gesloten door {inter.author.mention}", color=disnake.Color.green())
             await inter.response.send_message(embed=embed)  
             
             # Define thread, give it the forum channel id
             thread = bot.get_channel(get_channel_id)
             
             # Adds tag to the Forum thread
-            tags = thread.parent.get_tag_by_name("Solved")
+            tags = thread.parent.get_tag_by_name("Opgelost")
             await thread.add_tags(tags)
             
             # Archives the given thread
-            await thread.edit(archived=True)
-            
+            await thread.edit(archived=True)       
+                
             
         # Poll function
         @bot.slash_command(description="Maak een poll aan!")
