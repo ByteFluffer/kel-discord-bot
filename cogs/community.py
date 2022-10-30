@@ -1,3 +1,4 @@
+from types import NoneType
 import disnake
 from disnake.ext import commands
 import mysql.connector
@@ -169,7 +170,9 @@ class Community(commands.Cog):
             for user_from_db in result_all:
                 user_id_from_db = user_from_db[0]
                 msg_count_from_db = user_from_db[1]
-                name_user = (await bot.get_or_fetch_user(user_id_from_db)).name             
+                name_user = (await bot.get_or_fetch_user(user_id_from_db)).name
+                if name_user == NoneType:
+                    print("Geen user naam")             
                 embed.add_field(name=f"Gebruiker: {name_user}", value=f"Totaal aantal berichten: {msg_count_from_db}", inline=False)
             
             embed.set_footer(text="By </Kelvin>", icon_url="https://itkelvin.nl/CustomCPULOGO.png")
