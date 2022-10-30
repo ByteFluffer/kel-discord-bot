@@ -76,12 +76,20 @@ class Community(commands.Cog):
         @commands.cooldown(1, 3, commands.BucketType.user)
         async def solved(inter):
             
-            get_channel_id = inter.channel.id            
+            get_channel_id = inter.channel.id         
+               
             embed=disnake.Embed(title="Opgelost!", description=f"Ik heb deze thread als opgelost gemarkeerd! Thread is gesloten door {inter.author.mention}", color=EMBED_GOOD)
-            await inter.response.send_message(embed=embed)             
+            await inter.response.send_message(embed=embed)  
             
-            thread = bot.get_channel(get_channel_id)  # You can also use bot.get_channel(...)
+            thread = bot.get_channel(get_channel_id)
+            
+            # Adds tag to the Forum thread
+            tags = thread.parent.get_tag_by_name("Solved")
+            await thread.add_tags(tags)
+            
+            # Archives the given thread
             await thread.edit(archived=True)
+            
             
         # Poll function
         @bot.slash_command(description="Maak een poll aan!")
