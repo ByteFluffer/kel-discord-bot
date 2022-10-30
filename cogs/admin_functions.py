@@ -46,32 +46,6 @@ class AdminFunctions(commands.Cog):
             await inter.response.send_message(f"Ik heb {announcement} naar: {kanaal} gestuurd!", delete_after=4.0)  
 
 
-        # Admin community commands
-        @bot.slash_command(description="Schoon de database op! (admin only!)")
-        async def database_clear_admin(inter):
-            if not inter.author.guild_permissions.administrator:
-                await inter.response.send_message("Sorry, deze functie is niet toegankelijk voor non-admins!")
-            
-            userIDs_in_server = []
-            guild = await bot.fetch_guild(1002208148930691172)
-            members = await guild.fetch_members(limit=2000).flatten()
-            
-            for member in members:
-                userIDs_in_server.append(member.id)
-            
-            cursor.execute("SELECT * FROM Users")
-            dbUsers = cursor.fetchall()
-            
-            for dbuser in dbUsers:
-                if dbuser[0] in userIDs_in_server:
-                    print(f"User {dbuser[0]} still lives in the guild!")
-                else:
-                    cursor.execute("DELETE FROM Users WHERE user_id = " + str(dbuser[0]))
-                    db.commit()
-                    print(f"I deleted user: {dbuser[0]}, i think he moved out!")
 
-            await inter.response.send_message("I deleted all the not in server members from the database!")  
-
-                    
 def setup(bot: commands.Bot):
     bot.add_cog(AdminFunctions(bot))        
