@@ -3,11 +3,12 @@ import disnake
 from disnake.ext import commands
 import mysql.connector
 from secrets import secure
+import requests
 
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
 
-# EMBED colors:
+# EMBED colors
 EMBED_DANGER = 0xFF0000
 EMBED_GOOD = 0x00FF00
 EMBED_ORANGE = 0xFFA500
@@ -101,12 +102,14 @@ class Community(commands.Cog):
             # Define thread, give it the forum channel id
             thread = bot.get_channel(get_channel_id)
             
-            # Archives the given thread
-            await thread.edit(archived=True)            
-
             # Adds tag to the Forum thread
             tags = thread.parent.get_tag_by_name("Solved")
             await thread.add_tags(tags)
+            
+            # Archives the given thread
+            await thread.edit(archived=True)            
+
+
             
 
             
@@ -181,7 +184,20 @@ class Community(commands.Cog):
             await inter.response.send_message(embed=embed)  
             
             
-
+        # Python code execute function
+        @bot.slash_command(description="Run some Python code")
+        async def python_run(inter, code):
+            
+            request = requests.post("http://localhost:8060/eval", json={"input": code}).json()
+            returncode = request["returncode"]
+            code_response = request["stdout"]
+            
+            await inter.response.send_message(f"""
+                                        Your code request job has completed with code {returncode}.
+                                        ```py
+                                        {code_response}
+                                        ```
+                                        """)
             
 # Adds it to the main
 def setup(bot: commands.Bot):
