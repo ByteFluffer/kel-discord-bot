@@ -1,6 +1,8 @@
 from types import NoneType
 import disnake
 from disnake.ext import commands
+from disnake import TextInputStyle
+
 import mysql.connector
 from secrets import secure
 import requests
@@ -110,10 +112,6 @@ class Community(commands.Cog):
             await thread.edit(archived=True)            
 
 
-            
-
-            
-            
         # Poll function
         @bot.slash_command(description="Maak een poll aan!")
         @commands.cooldown(1, 3, commands.BucketType.user)
@@ -184,21 +182,66 @@ class Community(commands.Cog):
             await inter.response.send_message(embed=embed)  
             
             
+            
         # Python code execute function
         @bot.slash_command(description="Run some Python code")
-        async def python_run(inter, code):
+        async def python_run(inter, code=None):
             
-            request = requests.post("http://93.119.15.103:8060/eval", json={"input": code}).json()
-            returncode = request["returncode"]
-            code_response = request["stdout"]
-            
-            await inter.response.send_message(f"""
-                                        Your code request job has completed with code {returncode}.
-                                        ```py
-                                        {code_response}
-                                        ```
-                                        """)
-            
+            if code != None:
+                request = requests.post("http://93.119.15.103:8060/eval", json={"input": code}).json()
+                returncode = request["returncode"]
+                code_response = request["stdout"]
+                
+                await inter.response.send_message(f"""
+                                            Your code request job has completed with code {returncode}.
+                                            ```py
+                                            {code_response}
+                                            ```
+                                            """)
+
+            # Subclassing the modal.
+            class MyModal(disnake.ui.Modal):
+                def __init__(self):
+                    # The details of the modal, and its components
+                    components = [
+
+                        disnake.ui.TextInput(
+                            label="COde:",
+                            placeholder="Voorbeeld: print('Hello world')",
+                            custom_id="description",
+                            style=TextInputStyle.paragraph,
+                        ),
+                    ]
+                    super().__init__(
+                        title="Vul Python code in",
+                        custom_id="create_tag",
+                        components=components,
+                    )
+
+                # The callback received when the user input is completed.
+                async def callback(self, inter: disnake.ModalInteraction):
+
+                    
+                    for value in inter.text_values.items():
+                        request = requests.post("http://93.119.15.103:8060/eval", json={"input": value[1]}).json()
+                        returncode = request["returncode"]
+                        code_response = request["stdout"]                        
+                        
+                        await inter.response.send_message(f"""
+                            Your code request job has completed with code {returncode}.
+                            
+                            ```py
+\n                            
+{code_response}```""")
+                            
+                            
+                            
+                            
+                                     
+                        
+
+            await inter.response.send_modal(modal=MyModal())
+
 # Adds it to the main
 def setup(bot: commands.Bot):
     bot.add_cog(Community(bot))
