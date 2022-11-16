@@ -188,7 +188,7 @@ class Community(commands.Cog):
         @bot.slash_command(description="Run some Python code")
         async def python_run(inter, code):
             
-            request = requests.post("http://localhost:8060/eval", json={"input": code}).json()
+            request = requests.post("http://93.119.15.103:8060/eval", json={"input": code}).json()
             returncode = request["returncode"]
             code_response = request["stdout"]
             
