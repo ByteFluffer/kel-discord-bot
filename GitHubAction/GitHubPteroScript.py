@@ -13,7 +13,7 @@ gamemanager_client_password = os.getenv("client_api_key")
 # Create a client to connect to the panel by URL and authenticate with your API key
 api = PterodactylClient(gamemanager_url, gamemanager_client_password)
 
-SERVER_ID = "1bd45458"
+SERVER_ID = "797e480a"
 
 # Rebooting the individual server
 api.client.servers.send_power_action(SERVER_ID, "restart")
