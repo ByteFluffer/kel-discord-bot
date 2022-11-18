@@ -10,7 +10,7 @@ import threading
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
 
-# TODO: Add comments to admin_functions.py & logger.py
+# TODO: Add comments to admin_functions.py & logger.py test
 
 # Getting things ready and making the database connection
 @bot.event
