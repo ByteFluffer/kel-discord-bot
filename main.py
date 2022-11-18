@@ -2,15 +2,10 @@ from asyncio.log import logger
 import disnake
 from disnake.ext import commands
 import mysql.connector
-import os
 from secrets import secure
-
 import cogs.logger as logger
 from disnake.ext.commands import Bot
-
 import threading
-from threading import Timer
-import requests
 
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
