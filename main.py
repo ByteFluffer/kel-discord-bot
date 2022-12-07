@@ -1,11 +1,16 @@
 from asyncio.log import logger
 import disnake
-from disnake.ext import commands
+from disnake.ext import commands, tasks
 import mysql.connector
 from secrets import secure
 import cogs.logger as logger
 from disnake.ext.commands import Bot
-import threading
+from threading import Thread
+from flask import Flask, request, json, render_template
+from modules.webhooks import *
+
+# Make flask instance
+app = Flask(__name__)
 
 intents = disnake.Intents.all()
 bot = commands.Bot(intents=intents)
@@ -27,9 +32,53 @@ async def on_ready():
     )
     cursor = db.cursor(buffered=True)
     print("The bot is ready now!")
-    # Starts threaded loop
-    await minute()
       
+
+
+# default making route and checking method
+@app.route('/', methods=["GET"])
+async def default():
+    return render_template("index.html")
+
+
+# UPTIME making route and checking method
+@app.route('/uptime', methods=["GET", "POST"])
+async def uptime():
+    # If method is GET, return error page
+    if request.method != "POST":
+      return render_template("error_invalid_method.html")
+   
+    # Call uptime_embed in handling.py with info
+    embed = webhook_uptime_handling(request.json)
+
+    # Returns data
+    return request.json
+
+
+
+
+
+# GITHUB making route and checking method
+@app.route('/githubIssue', methods=["GET", "POST"])
+async def github():
+    # If method is GET, return error page
+    if request.method != "POST":
+      return render_template("error_invalid_method.html")
+
+    # If a issue is made on repo, call webhook_print()
+    if request.json["issue"] != KeyError:
+        webhook_github_handling("issue", request.json)
+        pass
+    # If a pull request is made on repo, call webhook_print()
+    elif request.json["pull"] != KeyError:
+        print(request.json["repository"]["name"])
+        webhook_github_handling("pull", request.json)
+        pass
+
+    # Returns data
+    return request.json      
+
+
 
 # Message counting
 @bot.event
@@ -58,9 +107,11 @@ async def on_message(inter):
         cursor.execute(f"UPDATE Users SET total_message_count = {counting_new_total} WHERE user_id = {inter.author.id}")
         db.commit()
         
+
+        
 # Check if user hase more then 5 messageg, if yes print them (going to change)
+@tasks.loop(seconds=60)
 async def minute():
-    threading.Timer(60, minute).start()
     cursor.execute("SELECT * FROM Users")
     users = cursor.fetchall()
     for user in users:
@@ -73,7 +124,15 @@ async def minute():
 bot.load_extension("cogs.logger") 
 bot.load_extension("cogs.community")  
 bot.load_extension("cogs.admin_functions")  
-    
-# Run bot with token imported from secrets.py
-bot.run(secure.bot_token)
+bot.load_extension("cogs.on_member")  
+
+
+def flask_run_instance():
+    app.run('0.0.0.0', 5000, debug=False)
+
+Thread(target=flask_run_instance).start()
+
+# Run bot with token imported from secrets.py and running flask
+if __name__ == "__main__":
+    bot.run(secure.bot_token)
 
