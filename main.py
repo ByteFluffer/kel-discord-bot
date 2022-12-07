@@ -17,6 +17,7 @@ bot = commands.Bot(intents=intents)
 
 # TODO: Add comments to admin_functions.py & logger.py test
 
+# DISNAKE
 # Getting things ready and making the database connection
 @bot.event
 async def on_ready():
@@ -34,59 +35,54 @@ async def on_ready():
     print("The bot is ready now!")
       
 
-
+# FLASK
 # default making route and checking method
-@app.route('/', methods=["GET"])
+@app.route('/default', methods=["GET"])
 async def default():
     return render_template("index.html")
 
 
 # UPTIME making route and checking method
-@app.route('/uptime', methods=["GET", "POST"])
+@app.route('/uptime', methods=["POST"])
 async def uptime():
-    # If method is GET, return error page
-    if request.method != "POST":
-      return render_template("error_invalid_method.html")
-
     # Call uptime_embed in handling.py with info
     embed = webhook_uptime_handling(request.json)
+    send_to_channel(embed, channel=1034947233168236585)
 
-    channel = bot.get_channel(env_var.UPTIME_CHANNEL_ID)
-    print(channel)
-    bot.loop.create_task(channel.send(embed=embed))
-    print("Jeej")
-
-    # Returns data
-    return request.json
-
-
-
-
-
+    # Returns OK
+    return "Ok"   
 
 
 # GITHUB making route and checking method
-@app.route('/githubIssue', methods=["GET", "POST"])
+@app.route('/githubIssue', methods=["POST"])
 async def github():
-    # If method is GET, return error page
-    if request.method != "POST":
-      return render_template("error_invalid_method.html")
-
     # If a issue is made on repo, call webhook_print()
     if request.json["issue"] != KeyError:
-        webhook_github_handling("issue", request.json)
-        pass
+        embed = webhook_github_handling("issue", request.json)
+        send_to_channel(embed, channel=1031839675381469204)
+
     # If a pull request is made on repo, call webhook_print()
     elif request.json["pull"] != KeyError:
-        print(request.json["repository"]["name"])
-        webhook_github_handling("pull", request.json)
-        pass
+        embed = webhook_github_handling("pull", request.json)
+        send_to_channel(embed, channel=1031839675381469204)
 
-    # Returns data
-    return request.json      
+    # If a pull request is made on repo, call webhook_print()
+    elif request.json["push"] != KeyError:
+        embed = webhook_github_handling("push", request.json)
+        send_to_channel(embed, channel=1031839675381469204)
+
+    # Returns OK
+    return "Ok"   
+
+
+# Sending to a channel inside GUILD
+def send_to_channel(embed, channel):
+    channel_def = bot.get_channel(int(channel))
+    bot.loop.create_task(channel_def.send(embed=embed))
 
 
 
+# DISNAKE
 # Message counting
 @bot.event
 async def on_message(inter):
@@ -132,6 +128,7 @@ bot.load_extension("cogs.logger")
 bot.load_extension("cogs.community")  
 bot.load_extension("cogs.admin_functions")  
 bot.load_extension("cogs.on_member")  
+
 
 
 def flask_run_instance():

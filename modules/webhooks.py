@@ -22,11 +22,28 @@ def webhook_uptime_handling(data):
     return embed
 
 def webhook_github_handling(type, data):
-    embed=disnake.Embed(title="GitHub change!", description="Repository: " + str(data["repository"]["name"]), color=EMBED_GOOD)
-    embed.add_field(name="Type:", value=data["action"], inline=False)
-    embed.add_field(name="Title:", value=status, inline=False)
-    embed.add_field(name="Message:", value=data["heartbeat"]["msg"], inline=False)
-    embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+    if type == "issue":
+        embed=disnake.Embed(title="GitHub issue", description="Repository: " + str(data["repository"]["name"]), color=EMBED_GOOD)
+        embed.add_field(name="Type:", value=type, inline=False)
+        embed.add_field(name="Title:", value=data["issue"]["title"], inline=False)
+        embed.add_field(name="Issue text:", value=data["comment"]["body"], inline=False)
+        embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+
+    elif type == "pull":
+        embed=disnake.Embed(title="GitHub pull", description="Repository: " + str(data["repository"]["name"]), color=EMBED_GOOD)
+        print(data)
+        #embed.add_field(name="Type:", value=type, inline=False)
+        #embed.add_field(name="Title:", value=data["issue"]["title"], inline=False)
+        #embed.add_field(name="Issue text:", value=data["comment"]["body"], inline=False)
+        embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+
+    elif type == "push":
+        embed=disnake.Embed(title="GitHub push", description="Repository: " + str(data["repository"]["name"]), color=EMBED_GOOD)
+        print(data)
+        #embed.add_field(name="Type:", value=type, inline=False)
+        #embed.add_field(name="Title:", value=data["issue"]["title"], inline=False)
+        #embed.add_field(name="Issue text:", value=data["comment"]["body"], inline=False)
+        embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
 
     return embed
 #"issue", request.json["repository"]["name"], request.json["action"], request.json["issue"]["title"], request.json["comment"]["body"]    
