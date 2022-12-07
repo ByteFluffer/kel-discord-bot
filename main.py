@@ -8,7 +8,7 @@ from disnake.ext.commands import Bot
 from threading import Thread
 from flask import Flask, request, json, render_template
 from modules.webhooks import *
-
+import env_variable as env_var
 # Make flask instance
 app = Flask(__name__)
 
@@ -47,12 +47,19 @@ async def uptime():
     # If method is GET, return error page
     if request.method != "POST":
       return render_template("error_invalid_method.html")
-   
+
     # Call uptime_embed in handling.py with info
     embed = webhook_uptime_handling(request.json)
 
+    channel = bot.get_channel(env_var.UPTIME_CHANNEL_ID)
+    print(channel)
+    bot.loop.create_task(channel.send(embed=embed))
+    print("Jeej")
+
     # Returns data
     return request.json
+
+
 
 
 
