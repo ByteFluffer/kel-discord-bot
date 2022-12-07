@@ -44,7 +44,7 @@ async def default():
 
 # UPTIME making route and checking method
 @app.route('/uptime', methods=["POST"])
-async def uptime():
+def uptime():
     # Call uptime_embed in handling.py with info
     embed = webhook_uptime_handling(request.json)
     send_to_channel(embed, channel=1034947233168236585)
@@ -55,7 +55,7 @@ async def uptime():
 
 # GITHUB making route and checking method
 @app.route('/githubIssue', methods=["POST"])
-async def github():
+def github():
     # If a issue is made on repo, call webhook_print()
     if request.json["issue"] != KeyError:
         embed = webhook_github_handling("issue", request.json)
