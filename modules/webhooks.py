@@ -22,9 +22,11 @@ def webhook_uptime_handling(data):
     return embed
 
 def webhook_github_handling(type, data):
+    print("DEBUG: ", data)
     if type == "issue":
         embed=disnake.Embed(title="GitHub issue", description="Repository: " + str(data["repository"]["name"]), color=EMBED_GOOD)
-        embed.add_field(name="Type:", value=type, inline=False)
+        print(data)
+        embed.add_field(name="Type:", value=data["action"], inline=False)
         embed.add_field(name="Title:", value=data["issue"]["title"], inline=False)
         embed.add_field(name="Issue text:", value=data["comment"]["body"], inline=False)
         embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")

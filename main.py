@@ -57,6 +57,7 @@ def uptime():
 @app.route('/githubIssue', methods=["POST"])
 def github():
     # If a issue is made on repo, call webhook_print()
+    
     if request.json["issue"] != KeyError:
         embed = webhook_github_handling("issue", request.json)
         send_to_channel(embed, channel=1031839675381469204)
