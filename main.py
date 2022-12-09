@@ -87,7 +87,7 @@ def github():
 
 # Server logins making route
 @app.route('/server-logins', methods=["POST"])
-def uptime():
+def serverlogins():
     # Printing IP visitor
     print(f"IP: {request.remote_addr}, user: {request.remote_user}")
 
