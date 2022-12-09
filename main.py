@@ -38,7 +38,7 @@ async def on_ready():
 # FLASK
 # default making route and checking method
 @app.route('/default', methods=["GET"])
-async def default():
+def default():
     # Printing IP visitor
     print(f"IP: {request.remote_addr}, user: {request.remote_user}")
 
