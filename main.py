@@ -39,12 +39,18 @@ async def on_ready():
 # default making route and checking method
 @app.route('/default', methods=["GET"])
 async def default():
+    # Printing IP visitor
+    print(f"IP: {request.remote_addr}, user: {request.remote_user}")
+
     return render_template("index.html")
 
 
 # UPTIME making route and checking method
 @app.route('/uptime', methods=["POST"])
 def uptime():
+    # Printing IP visitor
+    print(f"IP: {request.remote_addr}, user: {request.remote_user}")
+
     # Call uptime_embed in handling.py with info
     embed = webhook_uptime_handling(request.json)
     send_to_channel(embed, channel=1034947233168236585)
@@ -56,6 +62,9 @@ def uptime():
 # GITHUB making route and checking method
 @app.route('/githubIssue', methods=["POST"])
 def github():
+    # Printing IP visitor
+    print(f"IP: {request.remote_addr}, user: {request.remote_user}")
+
     # If a issue is made on repo, call webhook_print()
     
     if request.json["issue"] != KeyError:
