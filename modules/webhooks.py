@@ -56,7 +56,7 @@ def webhook_server_login_handling(data):
             data_splitted = data['server_login_content'].split()
             embed=disnake.Embed(title=f"Server login!", description="Server: " + str(data_splitted[2]) , color=EMBED_GOOD)
             embed.add_field(name="User:", value=data_splitted[0], inline=False)
-            embed.add_field(name="IP:", value=data_splitted, inline=False)
+            embed.add_field(name="IP:", value=data_splitted[1], inline=False)
         else:
             data_splitted = data['server_logout_content'].split()
             embed=disnake.Embed(title=f"Server log-out!", description="Server: " + str(data_splitted[2]) , color=EMBED_GOOD)
