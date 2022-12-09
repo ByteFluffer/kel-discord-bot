@@ -92,8 +92,8 @@ def serverlogins():
     print(f"IP: {request.remote_addr}, user: {request.remote_user}")
 
     # Call uptime_embed in handling.py with info
-    webhook_server_login_handling(request.json)
-    #send_to_channel(embed, channel=1034947233168236585)
+    embed = webhook_server_login_handling(request.json)
+    send_to_channel(embed, channel=1050823395169804358)
 
     # Returns OK
     return "Ok"   

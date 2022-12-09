@@ -50,11 +50,18 @@ def webhook_github_handling(type, data):
     return embed
 
 def webhook_server_login_handling(data):
-    #embed=disnake.Embed(title="Server login!", description="Name: " , color=EMBED_GOOD)
+    for key in data:
+        if key == "server_login_content":
+            type = "login"
+            key_data = "server_login_content"
+        else:
+            key_data = "server_loguit_content"
+            type = "logout"
 
-    #embed.add_field(name="Status:", value=status, inline=False)
-    #embed.add_field(name="Message:", value=data["heartbeat"]["msg"], inline=False)
-    #embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+    embed=disnake.Embed(title=f"Server {type}!", description=f"Server: {data[key_data][2]}" , color=EMBED_GOOD)
 
-    print(data)
-#"issue", request.json["repository"]["name"], request.json["action"], request.json["issue"]["title"], request.json["comment"]["body"]    
+    embed.add_field(name="User:", value=data[key_data][0], inline=False)
+    embed.add_field(name="IP:", value=[key_data][1], inline=False)
+    embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+
+    return embed
