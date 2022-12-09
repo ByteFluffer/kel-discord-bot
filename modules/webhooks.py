@@ -63,6 +63,6 @@ def webhook_server_login_handling(data):
             embed.add_field(name="User:", value=data["server_logout_content"][0], inline=False)
             embed.add_field(name="IP:", value=data["server_logout_content"][1], inline=False)            
 
-    #embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+    embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
 
-    #return embed
+    return embed
