@@ -50,16 +50,17 @@ def webhook_github_handling(type, data):
     return embed
 
 def webhook_server_login_handling(data):
-    for key in data:
-        if key == "server_login_content":
-            embed=disnake.Embed(title=f"Server login!", description="Server: " + str(data["server_login_content"][2]) , color=EMBED_GOOD)
-            embed.add_field(name="User:", value=data["server_login_content"][0], inline=False)
-            embed.add_field(name="IP:", value=["server_login_content"][1], inline=False)
-        else:
-            embed=disnake.Embed(title=f"Server log-out!", description="Server: " + str(data["server_logout_content"][2]) , color=EMBED_GOOD)
-            embed.add_field(name="User:", value=data["server_logout_content"][0], inline=False)
-            embed.add_field(name="IP:", value=["server_logout_content"][1], inline=False)            
+    print(data)
+    #for key in data:
+    #    if key == "server_login_content":
+    #        embed=disnake.Embed(title=f"Server login!", description="Server: " + str(data["server_login_content"][2]) , color=EMBED_GOOD)
+    #        embed.add_field(name="User:", value=data["server_login_content"][0], inline=False)
+    #        embed.add_field(name="IP:", value=["server_login_content"][1], inline=False)
+    #    else:
+    #        embed=disnake.Embed(title=f"Server log-out!", description="Server: " + str(data["server_logout_content"][2]) , color=EMBED_GOOD)
+    #        embed.add_field(name="User:", value=data["server_logout_content"][0], inline=False)
+    #        embed.add_field(name="IP:", value=["server_logout_content"][1], inline=False)            
 
-    embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+    #embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
 
-    return embed
+    #return embed
