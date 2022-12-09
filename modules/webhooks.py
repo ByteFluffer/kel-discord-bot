@@ -59,10 +59,10 @@ def webhook_server_login_handling(data):
             embed.add_field(name="IP:", value=data_splitted, inline=False)
         else:
             data_splitted = data['server_logout_content'].split()
-            embed=disnake.Embed(title=f"Server log-out!", description="Server: " + str(data["server_logout_content"][2]) , color=EMBED_GOOD)
-            embed.add_field(name="User:", value=data["server_logout_content"][0], inline=False)
-            embed.add_field(name="IP:", value=data["server_logout_content"][1], inline=False)            
+            embed=disnake.Embed(title=f"Server log-out!", description="Server: " + str(data_splitted[2]) , color=EMBED_GOOD)
+            embed.add_field(name="User:", value=data_splitted[0], inline=False)
+            embed.add_field(name="IP:", value=data_splitted[1], inline=False)            
 
-    embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+    #embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
 
-    return embed
+    #return embed
