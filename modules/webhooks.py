@@ -48,4 +48,13 @@ def webhook_github_handling(type, data):
         embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
 
     return embed
+
+def webhook_server_login_handling(data):
+    #embed=disnake.Embed(title="Server login!", description="Name: " , color=EMBED_GOOD)
+
+    #embed.add_field(name="Status:", value=status, inline=False)
+    #embed.add_field(name="Message:", value=data["heartbeat"]["msg"], inline=False)
+    #embed.set_footer(text = "Made by KelvinCodes", icon_url = "https://itkelvin.nl/CustomCPULOGO.png")
+
+    print(data)
 #"issue", request.json["repository"]["name"], request.json["action"], request.json["issue"]["title"], request.json["comment"]["body"]    
