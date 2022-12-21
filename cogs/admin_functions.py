@@ -2,23 +2,13 @@ import disnake
 from disnake.ext import commands
 import time
 import mysql.connector
-from secrets import secure
+from env import *
 
 # EMBED colors:
 EMBED_DANGER = 0xFF0000
 EMBED_GOOD = 0x00FF00
 EMBED_ORANGE = 0xFFA500
 
-global cursor
-global db
-db = mysql.connector.connect(
-host= secure.database_ipadress,
-user= secure.database_username,
-password= secure.database_password,
-database= secure.database_name,
-auth_plugin="mysql_native_password"
-)
-cursor = db.cursor(buffered=True)
 
 class AdminFunctions(commands.Cog):
     def __init__(self, bot: commands.Bot):

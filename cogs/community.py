@@ -2,9 +2,9 @@ from types import NoneType
 import disnake
 from disnake.ext import commands
 from disnake import TextInputStyle
-
+from database import *
 import mysql.connector
-from secrets import secure
+from env import *
 import requests
 
 intents = disnake.Intents.all()
@@ -14,18 +14,8 @@ bot = commands.Bot(intents=intents)
 EMBED_DANGER = 0xFF0000
 EMBED_GOOD = 0x00FF00
 EMBED_ORANGE = 0xFFA500
-global cursor
-global guild    
 
-# Making database connections
-db = mysql.connector.connect(
-host= secure.database_ipadress,
-user= secure.database_username,
-password= secure.database_password,
-database= secure.database_name,
-auth_plugin="mysql_native_password"
-)
-cursor = db.cursor(buffered=True)
+global guild    
 
 
 # Cogs class
@@ -67,8 +57,8 @@ class Community(commands.Cog):
                 userIDs_in_server.append(member.id)
             
             # Get all users from DB
-            cursor.execute("SELECT * FROM Users")
-            dbUsers = cursor.fetchall()
+            Database.cursor.execute("SELECT * FROM Users")
+            dbUsers = Database.cursor.fetchall()
             
             # Checks if user is in guild and database by userID
             for dbuser in dbUsers:
@@ -76,8 +66,8 @@ class Community(commands.Cog):
                     print(f"User {dbuser[0]} still lives in the guild!")
                     
                 # If user is isn't in guild, but in database, delete user
-                cursor.execute("DELETE FROM Users WHERE user_id = " + str(dbuser[0]))
-                db.commit()
+                Database.ursor.execute("DELETE FROM Users WHERE user_id = " + str(dbuser[0]))
+                Database.db.commit()
                 print(f"I deleted user: {dbuser[0]}, i think he moved out!")
 
 
@@ -159,29 +149,6 @@ class Community(commands.Cog):
                 msg = await inter.original_message()
                 await msg.add_reaction("4️⃣")
 
-
-        # LevelBoard function
-        @bot.slash_command(description="Level leader board!")
-        async def levelbord(inter):
-            
-            # Getting users from DATABASE
-            cursor.execute("SELECT * FROM Users ORDER BY total_message_count DESC")
-            result_all = cursor.fetchall()
-
-            embed=disnake.Embed(title="Level bord!", description="Van hoog naar laag:", color=0x00ff00)
-
-            for user_from_db in result_all:
-                user_id_from_db = user_from_db[0]
-                msg_count_from_db = user_from_db[1]
-                name_user = (await bot.get_or_fetch_user(user_id_from_db)).name
-                if name_user == NoneType:
-                    print("Geen user naam")             
-                embed.add_field(name=f"Gebruiker: {name_user}", value=f"Totaal aantal berichten: {msg_count_from_db}", inline=False)
-            
-            embed.set_footer(text="By </Kelvin>", icon_url="https://itkelvin.nl/CustomCPULOGO.png")
-            await inter.response.send_message(embed=embed)  
-            
-            
             
         # Python code execute function
         @bot.slash_command(description="Run some Python code")
