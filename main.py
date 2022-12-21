@@ -25,7 +25,7 @@ async def on_ready():
     await bot.change_presence(activity=disnake.Activity(type=disnake.ActivityType.listening , name="/kel"))
     print("The bot is ready now!")
       
-      
+
 @bot.event
 async def on_message(inter):
     pass      
@@ -116,9 +116,6 @@ async def minute():
 
 
 # Loading different cogs
-bot.load_extension("cogs.logger") 
-bot.load_extension("cogs.community")  
-bot.load_extension("cogs.admin_functions")  
 bot.load_extension("cogs.on_member")  
 
 
@@ -128,7 +125,8 @@ def flask_run_instance():
 
 Thread(target=flask_run_instance).start()
 
+
 # Run bot with token imported from secrets.py and running flask
 if __name__ == "__main__":
-    bot.run(secure.bot_token)
+    bot.run(secure.BOT_TOKEN)
 
