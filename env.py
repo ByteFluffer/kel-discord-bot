@@ -1,7 +1,7 @@
 # credentials
 class secure:
     # Credentials bot
-    BOT_TOKEN = "OTc5NDE1MjE3MzM3NDAxNDI0.GtSWAh.--EHGTy1EcLNlIJiEl_UO5y1iNcjMP_cEVv9gM"
+    BOT_TOKEN = "OTc5NDE1MjE3MzM3NDAxNDI0.GHkA3n.31E8dRwdCDve99VLe42Gw2FamU77LgFMULRJqU"
     # Credentials database
     DATABASE_HOST = "10.10.10.20"
     DATABASE_USER = "kelvin"
