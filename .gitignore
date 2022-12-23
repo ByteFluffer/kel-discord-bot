@@ -5,3 +5,4 @@ __pycache__
 .vscode
 .fleet
 env.py
+requirements.py
