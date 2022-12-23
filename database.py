@@ -1,4 +1,3 @@
-
 from env import secure
 import mysql.connector
 
