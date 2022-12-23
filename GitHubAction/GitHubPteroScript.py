@@ -2,7 +2,7 @@
 from pydactyl import PterodactylClient
 import os
 from dotenv import load_dotenv
-
+import time
 # Loading envirement keys
 load_dotenv()
 
@@ -15,5 +15,9 @@ api = PterodactylClient(gamemanager_url, gamemanager_client_password)
 
 SERVER_ID = "e0a0f0b4"
 
-# Rebooting the individual server
-api.client.servers.send_power_action(SERVER_ID, "restart")
+# Killing the individual server
+api.client.servers.send_power_action(SERVER_ID, "kill")
+# Wait 10 seconds
+time.sleep(10)
+# Starting the server up again
+api.client.servers.send_power_action(SERVER_ID, "start")
