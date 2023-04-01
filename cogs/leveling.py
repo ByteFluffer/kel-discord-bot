@@ -20,7 +20,7 @@ class leveling(commands.Cog):
     async def on_message(self, message):
         # Leveling
         # If the message isnt from a bot
-        if message.author != self.bot.user or message.author.bot:
+        if message.author.id != 979415217337401424:
             # If user id isn't in the list, add it
             if message.author.id not in self.list_users:
                 self.list_users.append(message.author.id)
@@ -72,8 +72,8 @@ class leveling(commands.Cog):
 
             if int(8.196 * pow(int(get_level) + 1, 2.65) + 200) > get_xp:
                 level = get_level + 1
-                self.bot.loop.create_task(self, leveling.level_embed(level, user))
-
+                #self.bot.loop.create_task(leveling.level_embed(self, level, user))
+                print(f"User {user} has reached level {level}")
             leveling.set_level(level, user)
 
             print(f"User {user} gained xp: {int(get_xp) + XP}")
@@ -95,9 +95,9 @@ class leveling(commands.Cog):
     
     # Level message
     async def level_embed(self, level, user):
-        user = self.bot.get_or_fetch_user(int(user))
-        embed=disnake.Embed(title=f"User has leveled up!", description=f"{user.mention}", color=disnake.Color.green())
-        embed=disnake.Embed(title=f"Level:", description=f"{level}", color=disnake.Color.red())
+        user = await self.bot.get_or_fetch_user(int(user))
+        embed=disnake.Embed(title=f"User has leveled up!", description=f"{user.mention}", color=disnake.Color.red())
+        embed.add_field(name=f"Level:", value=level, inline=False)
         channel_to_send = self.bot.get_channel(ChannelIDs.KELVINCODES_CHANNEL)
         await channel_to_send.send(embed=embed)
 

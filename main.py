@@ -31,9 +31,13 @@ async def minute():
 # Loading different cogs
 bot.load_extension("cogs.community_events")  
 bot.load_extension("cogs.leveling")  
+#bot.load_extension("cogs.roleassignment")  
 
 
 # Run bot with token imported from secrets.py
 if __name__ == "__main__":
     bot.run(secure.BOT_TOKEN)
+
+
+
 
