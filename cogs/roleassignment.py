@@ -29,15 +29,16 @@ class roleassignment(commands.Cog):
     # Listening to reactions removed
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, reaction):
-
+        print("1")
         # First reaction role message
-        REACTION_ROLE_MSG_ONE = 1091764040092626994
+        REACTION_ROLE_MSG_ONE = 1091779444626178209
         
         guild = await self.bot.fetch_guild(1002208148930691172)
         user = await guild.fetch_member(reaction.user_id)
 
         # Reaction role one
         if reaction.message_id == REACTION_ROLE_MSG_ONE:
+            print("2")
             type= "remove"
             await self.reaction_roles_one(guild, user, reaction, type)
 
