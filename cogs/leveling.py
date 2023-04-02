@@ -19,7 +19,7 @@ class leveling(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         # Leveling
-        if message.author.id != 979415217337401424 or message.author.id != 914213997161635890:
+        if not message.author.bot:
             # If user id isn't in the list, add it
             if message.author.id not in self.list_users:
                 self.list_users.append(message.author.id)
