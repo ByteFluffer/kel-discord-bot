@@ -8,7 +8,7 @@ class roleassignment(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.REACTION_ONE = 1091779444626178209
-
+        self.VERIFY = 1092028079800582235
 
     # Listening to reactions added
     @commands.Cog.listener()
@@ -21,6 +21,12 @@ class roleassignment(commands.Cog):
         if reaction.message_id == self.REACTION_ONE:
             type= "add"
             await self.reaction_roles_one(guild, user, reaction, type)
+        
+        # Verify reaction
+        if reaction.message_id == self.VERIFY:
+            type= "add"
+            await self.reaction_verify(guild, user, reaction, type)
+
 
 
     # Listening to reactions removed
@@ -85,6 +91,18 @@ class roleassignment(commands.Cog):
             else:
                 await user.remove_roles(role)
                 await roleassignment.send_dm_for_role(self, user, type, role.name)
+
+
+
+    async def reaction_verify(self, guild, user, reaction, type):
+
+        if str(reaction.emoji) == "✅":
+            role = guild.get_role(1090649616933994516)
+
+            if type == "add":
+                await user.add_roles(role)
+                await roleassignment.send_dm_for_role(self, user, type, role.name)
+
 
 
     # Sending dm if user adds or removes a role
