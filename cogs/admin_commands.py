@@ -1,9 +1,7 @@
-
 import disnake
 from disnake.ext import commands, tasks
 from env import *
 from database import Database
-#         levelxpcap = int(8.196 * pow(level + 1, 2.65) + 200)
 
 
 class Admin_commands(commands.Cog):

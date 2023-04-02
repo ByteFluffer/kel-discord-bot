@@ -8,7 +8,6 @@ from database import Database
 
 class leveling(commands.Cog):
     def __init__(self, bot: commands.Bot):
-
         self.bot = bot
         # Starting tasks
         self.scoreboard_loop.start()
@@ -29,7 +28,7 @@ class leveling(commands.Cog):
 
 
     list_users = []
-    @tasks.loop(seconds=10) 
+    @tasks.loop(seconds=60) 
     async def scoreboard_loop(self):
         XP = 5
 
@@ -69,7 +68,7 @@ class leveling(commands.Cog):
             Database.cursor.execute(f"UPDATE scoreboard SET xp = {int(get_xp) + XP} WHERE user_id = {user}")
             Database.db.commit()
 
-            if int(8.196 * pow(int(get_level) + 1, 2.65) + 200) > get_xp:
+            if get_xp > int(8.196 * pow(int(get_level) + 1, 2.65) + 200):
                 level = get_level + 1
                 #self.bot.loop.create_task(leveling.level_embed(self, level, user))
                 print(f"User {user} has reached level {level}")
