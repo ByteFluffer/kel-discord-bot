@@ -92,12 +92,13 @@ class roleassignment(commands.Cog):
 
         user = self.bot.get_user(user.id)
         if str(type) == "add":
-            await user.send(f"I added a role with the name '{role}'.")
             print(f"Added role {role} to user {user}" )
+            await user.send(f"I added a role with the name '{role}'.")
+            return
         else:
-            await user.send(f"I removed a role with the name '{role}'.")
             print(f"Removed role {role} to user {user}" )
-
+            await user.send(f"I removed a role with the name '{role}'.")
+            return
 
 def setup(bot: commands.Bot):
     bot.add_cog(roleassignment(bot))
