@@ -27,6 +27,11 @@ class roleassignment(commands.Cog):
             type= "add"
             await self.reaction_verify(guild, user, reaction, type)
 
+        # Testing
+        if reaction.message_id == 1091877215748243547:
+
+            if str(reaction.emoji).split(":")[1:2][0] == "4323blurpleverifiedbotdeveloper1":
+                print("Jeejejejej")
 
 
     # Listening to reactions removed
@@ -91,6 +96,17 @@ class roleassignment(commands.Cog):
             else:
                 await user.remove_roles(role)
                 await roleassignment.send_dm_for_role(self, user, type, role.name)
+
+
+        if str(reaction.emoji).split(":")[1:2][0] == "4323blurpleverifiedbotdeveloper1":
+            role = guild.get_role(1092057399726198794)
+
+            if type == "add":
+                await user.add_roles(role)     
+                await roleassignment.send_dm_for_role(self, user, type, role.name)
+            else:
+                await user.remove_roles(role)
+                await roleassignment.send_dm_for_role(self, user, type, role.name)            
 
 
 
