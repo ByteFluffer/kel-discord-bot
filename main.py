@@ -32,6 +32,8 @@ bot.load_extension("cogs.community_events")
 bot.load_extension("cogs.leveling")  
 bot.load_extension("cogs.roleassignment")  
 bot.load_extension("cogs.community_commands")  
+bot.load_extension("cogs.admin_commands")  
+
 
 
 # Run bot with token imported from secrets.py
