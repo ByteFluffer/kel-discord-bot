@@ -89,7 +89,7 @@ class roleassignment(commands.Cog):
 
     # Sending dm if user adds or removes a role
     async def send_dm_for_role(self, user, type, role):
-
+        print("Debug send_dm_for_role")
         user = self.bot.get_user(user.id)
         if str(type) == "add":
             print(f"Added role {role} to user {user}" )
