@@ -7,21 +7,18 @@ from database import Database
 class roleassignment(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.message_id_one = 1091764040092626994
+        self.REACTION_ONE = 1091779444626178209
 
 
     # Listening to reactions added
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, reaction):
-
-        # First reaction role message
-        REACTION_ROLE_MSG_ONE = 1091764040092626994
         
         guild = await self.bot.fetch_guild(1002208148930691172)
         user = await guild.fetch_member(reaction.user_id)
 
         # Reaction role one
-        if reaction.message_id == REACTION_ROLE_MSG_ONE:
+        if reaction.message_id == self.REACTION_ONE:
             type= "add"
             await self.reaction_roles_one(guild, user, reaction, type)
 
@@ -29,18 +26,15 @@ class roleassignment(commands.Cog):
     # Listening to reactions removed
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, reaction):
-        print("1")
-        # First reaction role message
-        REACTION_ROLE_MSG_ONE = 1091779444626178209
         
         guild = await self.bot.fetch_guild(1002208148930691172)
         user = await guild.fetch_member(reaction.user_id)
 
         # Reaction role one
-        if reaction.message_id == REACTION_ROLE_MSG_ONE:
-            print("2")
+        if reaction.message_id == self.REACTION_ONE:
             type= "remove"
             await self.reaction_roles_one(guild, user, reaction, type)
+
 
 
     # Mother command
@@ -74,21 +68,35 @@ class roleassignment(commands.Cog):
 
         if str(reaction.emoji) == "💻":
             role = guild.get_role(1091490645719388301)
+
             if type == "add":
                 await user.add_roles(role)
+                await roleassignment.send_dm_for_role(self, user, type, role.name)
             else:
                 await user.remove_roles(role)
+                await roleassignment.send_dm_for_role(self, user, type, role.name)
 
         if str(reaction.emoji) == "🚀":
             role = guild.get_role(1091490529511997440)
+
             if type == "add":
                 await user.add_roles(role)     
+                await roleassignment.send_dm_for_role(self, user, type, role.name)
             else:
                 await user.remove_roles(role)
+                await roleassignment.send_dm_for_role(self, user, type, role.name)
 
 
+    # Sending dm if user adds or removes a role
+    async def send_dm_for_role(self, user, type, role):
 
-
+        user = self.bot.get_user(user.id)
+        if str(type) == "add":
+            await user.send(f"I added a role with the name '{role}'.")
+            print(f"Added role {role} to user {user}" )
+        else:
+            await user.send(f"I removed a role with the name '{role}'.")
+            print(f"Removed role {role} to user {user}" )
 
 
 def setup(bot: commands.Bot):
